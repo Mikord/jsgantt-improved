@@ -3,3 +3,14 @@ node_modules/
 *.log
 package-lock.json
 /jsgantt.js
+
+#
+# IntelliJ IDEA project files
+#
+.idea*/
+.classes*/
+*.ipr
+*.iml
+*.iws
+*.ids
+atlassian-ide-plugin.xml

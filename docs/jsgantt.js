@@ -44,6 +44,7 @@ exports.GanttChart = function (pDiv, pFormat) {
     this.vShowTaskInfoEndDate = 1;
     this.vShowTaskInfoNotes = 1;
     this.vShowTaskInfoLink = 0;
+    this.vShowDeps = 1;
     this.vEventClickRow = 1;
     this.vEvents = {
         taskname: null,
