@@ -119,11 +119,12 @@
     <option value='es'>es</option>
     <option value='fr'>fr</option>
     <option value='de'>de</option>
+    <option value='cn'>cn</option>
   </select>
 
   <br />
-  Data getting from a URL, <a href="fixes/data.json">JSON Data</a>
-
+  Data getting from a URL, <a href="fixes/data.json">JSON Data</a>. Use `bigdata.json` to test with more data.
+  <input id="dataurl" onchange="start(event)" value="./fixes/data.json" type="text">
   <br />
 
   Delay for tooltip to hide (in ms): <input id="delay" onchange="start(event)" value="150" type="number">
@@ -132,6 +133,27 @@
 
   <br />
   * Click events in table are binded to console.log for testing
+
+  <br />
+
+  <span>
+    <label>Configure debug and see in console:</label>
+    <input type="checkbox" id="debug" checked onchange="start(event)" />
+  </span>
+
+  <br />
+
+  <span>
+    <label>Configure editable:</label>
+    <input type="checkbox" id="editable" checked onchange="start(event)" />
+  </span>
+
+  <br />
+
+  <span>
+    <label>Configure sortTasks:</label>
+    <input type="checkbox" id="sort" checked onchange="start(event)" />
+  </span>
 
   <br />
   <div id="embedded-Gantt">

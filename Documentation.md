@@ -42,24 +42,26 @@ see [Configuration Options](Documentation#user-content-options) below
 
 // passing object
 g.AddTaskItemObject({
-  "pID": 1,
-  "pName": "Define Chart API",
-  "pStart": "2017-02-25",
-  "pEnd": "2017-03-17",
-  "pPlanStart": "2017-04-01",
-  "pPlanEnd": "2017-04-15 12:00",
-  "pClass": "ggroupblack",
-  "pLink": "",
-  "pMile": 0,
-  "pRes": "Brian",
-  "pComp": 0,
-  "pGroup": 1,
-  "pParent": 0,
-  "pOpen": 1,
-  "pDepend": "",
-  "pCaption": "",
-  "pCost": 1000,
-  "pNotes": "Some Notes text"
+  pID: 1,
+  pName: "Define Chart <strong>API</strong>",
+  pStart: "2017-02-25",
+  pEnd: "2017-03-17",
+  pPlanStart: "2017-04-01",
+  pPlanEnd: "2017-04-15 12:00",
+  pClass: "ggroupblack",
+  pLink: "",
+  pMile: 0,
+  pRes: "Brian",
+  pComp: 0,
+  pGroup: 1,
+  pParent: 0,
+  pOpen: 1,
+  pDepend: "",
+  pCaption: "",
+  pCost: 1000,
+  pNotes: "Some Notes text",
+  category: "My Category",
+  sector: "Finance"
 });
 
 // or passing parameters
@@ -90,7 +92,7 @@ Method definition:
 |_pCaption:_|(optional) caption that will be added after task bar if CaptionType set to "Caption"|
 |_pNotes:_|(optional) Detailed task information that will be displayed in tool tip for this task|
 |_pGantt:_|(required) javascript JSGantt.GanttChart object from which to take settings.  Defaults to "g" for backwards compatibility|
-|_pCost:_|(required) cost of that task, numeric        
+|_pCost:_| cost of that task, numeric        
 
 <sup>*</sup> Combined group tasks show all sub-tasks on one row. The information displayed in the task list and row caption are taken from the parent task.  Tool tips are generated individually for each sub-task from its own information.  Milestones are not valid as sub-tasks of a combined group task and will not be displayed. No bounds checking of start and end dates of sub-tasks is performed therefore it is possible for these task bars to overlap. Dependencies can be set to and from sub-tasks only.
 
@@ -122,7 +124,9 @@ The structure of the JSON file:
   "pDepend": "",
   "pCaption": "",
   "pCost":  "",
-  "pNotes": "Some Notes text"
+  "pNotes": "Some Notes text",
+  "category": "My Category",
+  "sector": "Finance"
 }
 ```
 
@@ -243,6 +247,7 @@ The following options take a single numeric parameter; a value of 1 will enable 
 |_setShowPlanStartDate():_|Controls whether the Plan Task Start Date column is displayed in the task list, defaults to 1 (show column)|
 |_setShowPlanEndDate():_|Controls whether the Task Plan End Date column is displayed in the task list, defaults to 1 (show column)|
 |_setShowCost():_|Controls whether the Cost column is displayed in the task list, defaults to 1 (show column)|
+|_setAdditionalHeaders():_|Set the object with additional headers to be displayed in the data table. ex : { category: { title: 'Category' } }|
 |_setShowTaskInfoRes():_|Controls whether the Resource information is displayed in the task tool tip, defaults to 1 (show information)|
 |_setShowTaskInfoDur():_|Controls whether the Task Duration information is displayed in the task tool tip, defaults to 1 (show information)|
 |_setShowTaskInfoComp():_|Controls whether the Percentage Complete information is displayed in the task tool tip, defaults to 1 (show information)|
@@ -252,6 +257,14 @@ The following options take a single numeric parameter; a value of 1 will enable 
 |_setShowTaskInfoNotes():_|Controls whether the Additional Notes data is displayed in the task tool tip, defaults to 1 (show notes)|
 |_setShowEndWeekDate():_|Controls whether the major heading in "Day" view displays the week end-date in the appropriate format (see [below](Documentation#user-content-display-date-formats)), defaults to 1 (show date)|
 |_setShowDeps():_  |Controls display of dependancy lines, defaults to 1 (show dependencies)|
+|_setEvents():_  |Controls events when a task is click in table data. You have to pass an object with the column and function. ex.: ` { taskname: console.log, res: console.log }`|
+|_setEventClickRow():_  |Controls events when a task row is cliked. Pass a function to exercute ex.: `function(e){console.log(e)}`|
+|_setEventsChange():_  |Controls events when a task row is cliked. Pass a function to exercute ex.: `{ taskname: function(task, event, cell, column){ console.log(task, event, cell, column); } }`|
+|_setAdditionalHeaders:_ |Set object with headers values for additional columns . ex : `{ category: { title: 'Category' }` }|
+|_setResources():_  |Set the list of possible resources, must be an array of objects, ex: `[{ id: 1, name: 'Mario' } , { id: 2, name: 'Henrique' }]`| 
+|_setEditable():_  |Set with true if you want to edit values in the data table, will show inputs instead of texts| 
+|_setDebug():_  |Set with true if you want to see debug in console| 
+
 
 ## Key Values ##
 The following options enable functionality using a set of specific key values
@@ -412,10 +425,30 @@ g.setOptions({
   vDayMajorDateDisplayFormat: 'mon yyyy - Week ww',// Set format to display dates in the "Major" header of the "Day" view
   vWeekMinorDateDisplayFormat: 'dd mon', // Set format to display dates in the "Minor" header of the "Week" view
   vLang: lang,
+  vAdditionalHeaders: { // Add data columns to your table
+    category: {
+      title: 'Category'
+    },
+    sector: {
+      title: 'Sector'
+    }
+  },
   vShowTaskInfoLink: 1, // Show link in tool tip (0/1)
   vShowEndWeekDate: 0,  // Show/Hide the date for the last day of the week in header for daily view (1/0)
   vUseSingleCell: 10000, // Set the threshold at which we will only use one cell per table row (0 disables).  Helps with rendering performance for large charts.
   vFormatArr: ['Day', 'Week', 'Month', 'Quarter'], // Even with setUseSingleCell using Hour format on such a large chart can cause issues in some browsers
+  vEvents: {
+        taskname: console.log,
+        res: console.log,
+        dur: console.log,
+        comp: console.log,
+        startdate: console.log,
+        enddate: console.log,
+        planstartdate: console.log,
+        planenddate: console.log,
+        cost: console.log
+      },
+  vEventClickRow: console.log
 });
 
 // Load from a Json url
@@ -423,24 +456,26 @@ JSGantt.parseJSON('./fixes/data.json', g);
 
 // Or Adding  Manually
 g.AddTaskItemObject({
-  "pID": 1,
-  "pName": "Define Chart API",
-  "pStart": "2017-02-25",
-  "pEnd": "2017-03-17",
-  "pPlanStart": "2017-04-01",
-  "pPlanEnd": "2017-04-15 12:00",
-  "pClass": "ggroupblack",
-  "pLink": "",
-  "pMile": 0,
-  "pRes": "Brian",
-  "pComp": 0,
-  "pGroup": 1,
-  "pParent": 0,
-  "pOpen": 1,
-  "pCost": 100,
-  "pDepend": "",
-  "pCaption": "",
-  "pNotes": "Some Notes text"
+  pID: 1,
+  pName: "Define Chart <strong>API</strong>",
+  pStart: "2017-02-25",
+  pEnd: "2017-03-17",
+  pPlanStart: "2017-04-01",
+  pPlanEnd: "2017-04-15 12:00",
+  pClass: "ggroupblack",
+  pLink: "",
+  pMile: 0,
+  pRes: "Brian",
+  pComp: 0,
+  pGroup: 1,
+  pParent: 0,
+  pOpen: 1,
+  pDepend: "",
+  pCaption: "",
+  pCost: 1000,
+  pNotes: "Some Notes text",
+  category: "My Category",
+  sector: "Finance"
 });
 
 g.Draw();

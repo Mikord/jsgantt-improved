@@ -3,9 +3,9 @@ import { TaskItem } from "./task";
 /**
  * 
  * @param pFile 
- * @param pGanttVar 
+ * @param pGanttlet 
  */
-export const parseJSON = function (pFile, pGanttVar) {
+export const parseJSON = function (pFile, pGanttVar, vDebug = false) {
   let xhttp;
   if ((<any>window).XMLHttpRequest) {
     xhttp = new XMLHttpRequest();
@@ -14,9 +14,25 @@ export const parseJSON = function (pFile, pGanttVar) {
   }
   xhttp.open('GET', pFile, false);
   xhttp.send(null);
-  let jsonObj = eval('(' + xhttp.response + ')');
+  
+  let bd;
+  if (vDebug) {
+    bd = new Date();
+    console.log('before jsonparse', bd);
+  }
+  let jsonObj = JSON.parse(xhttp.response);
+  if (vDebug) {
+    const ad = new Date();
+    console.log('after jsonparse', ad, (ad.getTime() - bd.getTime()));
+    bd = new Date();
+  }
 
   addJSONTask(pGanttVar, jsonObj);
+  if (this.vDebug) {
+    const ad = new Date();
+    console.log('after addJSONTask', ad, (ad.getTime() - bd.getTime()));
+  }
+  return jsonObj;
 };
 
 export const parseJSONString = function (pStr, pGanttVar) {
@@ -44,6 +60,7 @@ export const addJSONTask = function (pGanttVar, pJsonObj) {
       let caption = '';
       let notes = '';
       let cost;
+      const additionalObject = {};
 
       for (let prop in pJsonObj[index]) {
         let property = prop;
@@ -121,11 +138,13 @@ export const addJSONTask = function (pGanttVar, pJsonObj) {
           case 'cost':
             cost = value;
             break;
+          default:
+            additionalObject[property.toLowerCase()] = value;
         }
       }
 
       //if (id != undefined && !isNaN(parseInt(id)) && isFinite(id) && name && start && end && itemClass && completion != undefined && !isNaN(parseFloat(completion)) && isFinite(completion) && !isNaN(parseInt(parent)) && isFinite(parent)) {
-      pGanttVar.AddTaskItem(new TaskItem(id, name, start, end, itemClass, link, milestone, resourceName, completion, group, parent, open, dependsOn, caption, notes, pGanttVar, cost, planstart, planend));
+      pGanttVar.AddTaskItem(new TaskItem(id, name, start, end, itemClass, link, milestone, resourceName, completion, group, parent, open, dependsOn, caption, notes, pGanttVar, cost, planstart, planend, additionalObject));
       //}
     }
   }
