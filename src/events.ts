@@ -177,14 +177,16 @@ export const addListenerInputCell = function (vTmpCell, vEventsChange, callback,
 }
 
 export const addListenerDependencies = function () {
-  document.querySelectorAll('.gtaskbarcontainer').forEach(taskDiv => {
+  let arr = document.querySelectorAll('.gtaskbarcontainer');
+  for (let i = 0; i < arr.length; ++i) {
+    let taskDiv = arr[i];
     taskDiv.addEventListener('mouseover', e => {
       toggleDependencies(e);
     });
     taskDiv.addEventListener('mouseout', e => {
       toggleDependencies(e);
     });
-  });
+  }
 }
 
 const toggleDependencies = function (e) {
@@ -195,9 +197,11 @@ const toggleDependencies = function (e) {
     style = '';
   }
   if (ids.length > 1) {
-    document.querySelectorAll(`.gDepId${ids[1]}`).forEach((c: any) => {
+    let arr = document.querySelectorAll(`.gDepId${ids[1]}`);
+    for (let i = 0; i < arr.length; ++i) {
+      let c: any = arr[i];
       c.style.borderStyle = style;
-    });
+    }
   }
 }
 
