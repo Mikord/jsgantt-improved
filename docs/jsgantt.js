@@ -3165,11 +3165,11 @@ exports.getScrollPositions = function () {
     return { x: vScrollLeft, y: vScrollTop };
 };
 exports.getOffset = function (pStartDate, pEndDate, pColWidth, pFormat) {
-    var DAY_CELL_MARGIN_WIDTH = 3; // Cell margin for 'day' format
-    var WEEK_CELL_MARGIN_WIDTH = 3; // Cell margin for 'week' format
+    var DAY_CELL_MARGIN_WIDTH = 1; // Cell margin for 'day' format
+    var WEEK_CELL_MARGIN_WIDTH = 1; // Cell margin for 'week' format
     var MONTH_CELL_MARGIN_WIDTH = 1; // Cell margin for 'month' format
     var QUARTER_CELL_MARGIN_WIDTH = 1; // Cell margin for 'quarter' format
-    var HOUR_CELL_MARGIN_WIDTH = 3; // Cell margin for 'hour' format
+    var HOUR_CELL_MARGIN_WIDTH = 1; // Cell margin for 'hour' format
     var vMonthDaysArr = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
     var curTaskStart = new Date(pStartDate.getTime());
     var curTaskEnd = new Date(pEndDate.getTime());
