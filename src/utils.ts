@@ -1,6 +1,10 @@
 
 export const getMinDate = function (pList, pFormat) {
   let vDate = new Date();
+
+  if (pList.length === 0) {
+    return vDate;
+  }
   vDate.setTime(pList[0].getStart().getTime());
 
   // Parse all Task End dates to find min
@@ -45,6 +49,9 @@ export const getMinDate = function (pList, pFormat) {
 export const getMaxDate = function (pList, pFormat) {
   let vDate = new Date();
 
+  if (pList.length === 0) {
+    return vDate;
+  }
   vDate.setTime(pList[0].getEnd().getTime());
 
   // Parse all Task End dates to find max
