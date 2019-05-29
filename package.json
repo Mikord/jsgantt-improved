@@ -45,5 +45,8 @@
   },
   "release": {
     "branch": "cg-master"
+  },
+  "publishConfig": {
+    "registry": "http://repo.cg.ru/repository/npm-private/"
   }
 }
