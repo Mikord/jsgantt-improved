@@ -1,4 +1,4 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.JSGantt = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.JSGantt = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var jsGantt = require("./src/jsgantt");
@@ -44,7 +44,6 @@ exports.GanttChart = function (pDiv, pFormat) {
     this.vShowTaskInfoEndDate = 1;
     this.vShowTaskInfoNotes = 1;
     this.vShowTaskInfoLink = 0;
-    this.vShowDeps = 1;
     this.vEventClickRow = 1;
     this.vShowDeps = 1;
     this.vWorkingDays = {
@@ -1246,14 +1245,16 @@ exports.addListenerInputCell = function (vTmpCell, vEventsChange, callback, task
     }
 };
 exports.addListenerDependencies = function () {
-    document.querySelectorAll('.gtaskbarcontainer').forEach(function (taskDiv) {
+    var arr = document.querySelectorAll('.gtaskbarcontainer');
+    for (var i = 0; i < arr.length; ++i) {
+        var taskDiv = arr[i];
         taskDiv.addEventListener('mouseover', function (e) {
             toggleDependencies(e);
         });
         taskDiv.addEventListener('mouseout', function (e) {
             toggleDependencies(e);
         });
-    });
+    }
 };
 var toggleDependencies = function (e) {
     var target = e.currentTarget;
@@ -1263,9 +1264,11 @@ var toggleDependencies = function (e) {
         style = '';
     }
     if (ids.length > 1) {
-        document.querySelectorAll(".gDepId" + ids[1]).forEach(function (c) {
+        var arr = document.querySelectorAll(".gDepId" + ids[1]);
+        for (var i = 0; i < arr.length; ++i) {
+            var c = arr[i];
             c.style.borderStyle = style;
-        });
+        }
     }
 };
 // "pID": 122
@@ -2845,6 +2848,9 @@ exports.processRows = function (pList, pID, pRow, pLevel, pOpen, pUseSort, vDebu
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMinDate = function (pList, pFormat) {
     var vDate = new Date();
+    if (pList.length === 0) {
+        return vDate;
+    }
     vDate.setTime(pList[0].getStart().getTime());
     // Parse all Task End dates to find min
     for (var i = 0; i < pList.length; i++) {
@@ -2891,6 +2897,9 @@ exports.getMinDate = function (pList, pFormat) {
 };
 exports.getMaxDate = function (pList, pFormat) {
     var vDate = new Date();
+    if (pList.length === 0) {
+        return vDate;
+    }
     vDate.setTime(pList[0].getEnd().getTime());
     // Parse all Task End dates to find max
     for (var i = 0; i < pList.length; i++) {

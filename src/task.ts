@@ -152,7 +152,8 @@ export const TaskItemObject = function (object) {
     object.pGantt,
     object.pCost,
     object.pPlanStart,
-    object.pPlanEnd
+    object.pPlanEnd,
+    object.pDataObject
   );
 }
 
